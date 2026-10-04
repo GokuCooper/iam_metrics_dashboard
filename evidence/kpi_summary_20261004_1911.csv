@@ -1,0 +1,7 @@
+run_time_utc,kpi,value,detail,target,verdict
+2026-10-04T19:11:05+00:00,Orphaned accounts,1,of 13 enabled accounts,0,Needs action
+2026-10-04T19:11:05+00:00,MFA adoption rate,46%,6 of 13 accounts,95% or higher,Needs action
+2026-10-04T19:11:05+00:00,Provisioning SLA,62%,"5 of 8 on time, average 36 hours",90% or higher,Needs action
+2026-10-04T19:11:05+00:00,Dormant accounts,3,of 12 measured accounts,0,Needs action
+2026-10-04T19:11:05+00:00,Over provisioned identities,1,of 9 standard accounts,0,Needs action
+2026-10-04T19:11:05+00:00,Deprovisioning SLA,0 of 1,"leavers closed in 24 hours, mean 4.8 days",All leavers on time,Needs action

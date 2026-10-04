@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IAM posture report</title>
+<style>
+  :root {
+    --paper: #f6f7f9; --sheet: #ffffff; --ink: #16202e; --quiet: #5a6577; --rule: #d9dee6;
+    --good: #1f7a4d; --warn: #a86200; --bad: #b3261e; --accent: #2f4b7c;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font: 16px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 40px 28px 64px; }
+  h1, h2, h3, .value, .tally { font-family: Bahnschrift, "DIN Alternate", "Segoe UI", sans-serif; }
+  header { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end;
+           border-bottom: 3px solid var(--ink); padding-bottom: 20px; }
+  h1 { font-size: 40px; line-height: 1.1; margin: 0 0 6px; font-weight: 600; }
+  header p { margin: 0; color: var(--quiet); max-width: 62ch; }
+  .tally { text-align: right; font-size: 56px; line-height: 1; font-weight: 600; }
+  .tally small { display: block; font: 14px/1.4 "Segoe UI", sans-serif; color: var(--quiet); margin-top: 6px; }
+  .measure { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 2fr);
+             gap: 8px 28px; align-items: start; padding: 22px 0 22px 18px;
+             border-bottom: 1px solid var(--rule); border-left: 6px solid var(--rule); margin-top: 18px;
+             background: var(--sheet); padding-right: 22px; }
+  .measure.good { border-left-color: var(--good); }
+  .measure.warn { border-left-color: var(--warn); }
+  .measure.bad { border-left-color: var(--bad); }
+  .measure h2 { margin: 0 0 4px; font-size: 22px; font-weight: 600; }
+  .measure p { margin: 0; color: var(--quiet); }
+  .value { display: block; font-size: 44px; line-height: 1; font-weight: 600; }
+  .unit { display: block; color: var(--quiet); font-size: 14px; margin-top: 6px; }
+  .verdict { display: block; font-weight: 600; }
+  .good .verdict { color: var(--good); } .warn .verdict { color: var(--warn); } .bad .verdict { color: var(--bad); }
+  .more { grid-column: 1 / -1; margin-top: 8px; }
+  .note { font-size: 14px; }
+  .clear { font-size: 14px; color: var(--good) !important; margin-top: 6px !important; }
+  details { margin-top: 10px; }
+  summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 14px; }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+  th { text-align: left; font-weight: 600; color: var(--quiet); border-bottom: 1px solid var(--ink); padding: 6px 12px 6px 0; }
+  td { border-bottom: 1px solid var(--rule); padding: 7px 12px 7px 0; vertical-align: top; }
+  .login { overflow-wrap: anywhere; }
+  .scroll { overflow-x: auto; }
+  h3 { font-size: 22px; font-weight: 600; margin: 44px 0 4px; }
+  h3 + p { margin: 0; color: var(--quiet); max-width: 75ch; }
+  footer { margin-top: 44px; padding-top: 16px; border-top: 3px solid var(--ink); color: var(--quiet); font-size: 14px; }
+  @media (max-width: 760px) {
+    header, .measure { grid-template-columns: 1fr; }
+    .tally { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>IAM posture report</h1>
+      <p>Six identity health measures across Microsoft Entra ID (9 accounts) and
+         Okta (4 accounts), checked against the HR roster.
+         Data pulled October 04, 2026 at 19:29 UTC.</p>
+    </div>
+    <div class="tally">2 of 6<small>measures meet target</small></div>
+  </header>
+  
+      <section class="measure good">
+        <div class="what">
+          <h2>Orphaned accounts</h2>
+          <p>Enabled accounts that match nobody on the HR roster and are not on the exceptions register.</p>
+        </div>
+        <div class="score">
+          <span class="value">0</span>
+          <span class="unit">of 10 enabled accounts</span>
+        </div>
+        <div class="target">
+          <span class="verdict"><span class="mark">&#9679;</span> Meets target</span>
+          <span class="unit">Target: 0</span>
+        </div>
+        <div class="more">
+          <p class="note">A simpler rule (no manager on file) would have flagged 7 accounts. Matching against HR and the exceptions register leaves 0.</p>
+          <p class='clear'>Nothing to fix here.</p>
+        </div>
+      </section>
+      <section class="measure bad">
+        <div class="what">
+          <h2>MFA adoption rate</h2>
+          <p>Share of enabled accounts with at least one MFA method registered.</p>
+        </div>
+        <div class="score">
+          <span class="value">60%</span>
+          <span class="unit">6 of 10 accounts</span>
+        </div>
+        <div class="target">
+          <span class="verdict"><span class="mark">&#9632;</span> Needs action</span>
+          <span class="unit">Target: 95% or higher</span>
+        </div>
+        <div class="more">
+          <p class="note">Entra ID 5 of 7, Okta 1 of 3.</p>
+          <details open><summary>4 accounts behind this number</summary><table class='findings'><thead><tr><th>Platform</th><th>Name</th><th>Login</th><th>Why it is listed</th></tr></thead><tbody><tr><td>Entra ID</td><td>Lúcio Correia dos Santos</td><td class='login'>ldossantos@dknorringtonzohomail.onmicrosoft.com</td><td>No MFA method registered</td></tr><tr><td>Entra ID</td><td>Lena Oxton</td><td class='login'>loxton@dknorringtonzohomail.onmicrosoft.com</td><td>No MFA method registered</td></tr><tr><td>Okta</td><td>Jack Dempsey</td><td class='login'>sales.tester@example.com</td><td>No MFA method registered</td></tr><tr><td>Okta</td><td>Marvin Haggler</td><td class='login'>hr.tester@example.com</td><td>No MFA method registered</td></tr></tbody></table></details>
+        </div>
+      </section>
+      <section class="measure bad">
+        <div class="what">
+          <h2>Provisioning SLA</h2>
+          <p>New hires whose account existed within 48 hours of their hire date.</p>
+        </div>
+        <div class="score">
+          <span class="value">62%</span>
+          <span class="unit">5 of 8 on time, average 36 hours</span>
+        </div>
+        <div class="target">
+          <span class="verdict"><span class="mark">&#9632;</span> Needs action</span>
+          <span class="unit">Target: 90% or higher</span>
+        </div>
+        <div class="more">
+          <p class="note">Accounts created but never activated by the user: 2.</p>
+          <details open><summary>5 accounts behind this number</summary><table class='findings'><thead><tr><th>Platform</th><th>Name</th><th>Login</th><th>Why it is listed</th></tr></thead><tbody><tr><td>Entra ID</td><td>Lúcio Correia dos Santos</td><td class='login'>ldossantos@dknorringtonzohomail.onmicrosoft.com</td><td>Account created 49 hours after hire date 2026-09-24</td></tr><tr><td>Entra ID</td><td>Maugaloa Malosi</td><td class='login'>mmalosi@dknorringtonzohomail.onmicrosoft.com</td><td>Account created 73 hours after hire date 2026-09-23</td></tr><tr><td>Okta</td><td>Thomas Herns</td><td class='login'>engineering.tester@example.com</td><td>Account created 54 hours after hire date 2026-09-14</td></tr><tr><td>Okta</td><td>Jack Dempsey</td><td class='login'>sales.tester@example.com</td><td>Created but never activated by the user</td></tr><tr><td>Okta</td><td>Marvin Haggler</td><td class='login'>hr.tester@example.com</td><td>Created but never activated by the user</td></tr></tbody></table></details>
+        </div>
+      </section>
+      <section class="measure bad">
+        <div class="what">
+          <h2>Dormant accounts</h2>
+          <p>Enabled accounts with no sign in for 14 days or more.</p>
+        </div>
+        <div class="score">
+          <span class="value">2</span>
+          <span class="unit">of 9 measured accounts</span>
+        </div>
+        <div class="target">
+          <span class="verdict"><span class="mark">&#9632;</span> Needs action</span>
+          <span class="unit">Target: 0</span>
+        </div>
+        <div class="more">
+          <p class="note">Lab threshold is 14 days because the tenants are new. Production standard is 90 days.</p>
+          <details open><summary>2 accounts behind this number</summary><table class='findings'><thead><tr><th>Platform</th><th>Name</th><th>Login</th><th>Why it is listed</th></tr></thead><tbody><tr><td>Okta</td><td>Jack Dempsey</td><td class='login'>sales.tester@example.com</td><td>Never signed in, account is 18 days old</td></tr><tr><td>Okta</td><td>Marvin Haggler</td><td class='login'>hr.tester@example.com</td><td>Never signed in, account is 18 days old</td></tr></tbody></table></details>
+        </div>
+      </section>
+      <section class="measure good">
+        <div class="what">
+          <h2>Over provisioned identities</h2>
+          <p>Standard accounts that hold an admin role or sit in a group that exempts them from a security policy.</p>
+        </div>
+        <div class="score">
+          <span class="value">0</span>
+          <span class="unit">of 6 standard accounts</span>
+        </div>
+        <div class="target">
+          <span class="verdict"><span class="mark">&#9679;</span> Meets target</span>
+          <span class="unit">Target: 0</span>
+        </div>
+        <div class="more">
+          <p class="note">Admin and emergency accounts on the exceptions register are expected to hold roles and are not counted.</p>
+          <p class='clear'>Nothing to fix here.</p>
+        </div>
+      </section>
+      <section class="measure warn">
+        <div class="what">
+          <h2>Deprovisioning SLA</h2>
+          <p>Leavers whose account was disabled within 24 hours of their termination date.</p>
+        </div>
+        <div class="score">
+          <span class="value">1 of 2</span>
+          <span class="unit">leavers closed in 24 hours, mean 2.8 days</span>
+        </div>
+        <div class="target">
+          <span class="verdict"><span class="mark">&#9650;</span> Watch</span>
+          <span class="unit">Target: All leavers on time</span>
+        </div>
+        <div class="more">
+          <p class="note">No leaver account is currently enabled.</p>
+          <details open><summary>1 account behind this number</summary><table class='findings'><thead><tr><th>Platform</th><th>Name</th><th>Login</th><th>Why it is listed</th></tr></thead><tbody><tr><td>Entra ID</td><td>Vaira Singhania</td><td class='login'>vsinghania@dknorringtonzohomail.onmicrosoft.com</td><td>Left on 2026-09-30, disabled 4.8 days later, outside the 24 hour target</td></tr></tbody></table></details>
+        </div>
+      </section>
+
+  <h3>Exceptions register</h3>
+  <p>Accounts that are allowed to exist without an HR record. Each one has a named owner and a written reason.</p>
+  <div class="scroll"><table><thead><tr><th>Platform</th><th>Login</th><th>Type</th><th>Owner</th><th>Reason</th></tr></thead>
+  <tbody><tr><td>Entra ID</td><td class='login'>breakglass01@dknorringtonzohomail.onmicrosoft.com</td><td>emergency access</td><td>DeJurnett Norrington</td><td>Break glass account. Not tied to a person by design so it survives an outage.</td></tr><tr><td>Entra ID</td><td class='login'>labadmin@dknorringtonzohomail.onmicrosoft.com</td><td>admin</td><td>DeJurnett Norrington</td><td>Dedicated tenant admin account, kept separate from any daily use identity.</td></tr><tr><td>Entra ID</td><td class='login'>dknorrington_zohomail.com#EXT#@dknorringtonzohomail.onmicrosoft.com</td><td>admin</td><td>DeJurnett Norrington</td><td>Tenant creator account. Personal Microsoft account shown as external.</td></tr><tr><td>Okta</td><td class='login'>dknorrington@zohomail.com</td><td>admin</td><td>DeJurnett Norrington</td><td>Okta org owner and super admin.</td></tr></tbody></table></div>
+
+  <h3>Run history</h3>
+  <p>One line per data collection, oldest first. This is how progress between runs is shown.</p>
+  <div class="scroll"><table><thead><tr><th>Run</th><th>Orphaned accounts</th><th>MFA adoption rate</th><th>Provisioning SLA</th><th>Dormant accounts</th><th>Over provisioned identities</th><th>Deprovisioning SLA</th><th>Meeting target</th></tr></thead>
+  <tbody><tr><td>2026-10-04 19:11 UTC</td><td>1</td><td>46%</td><td>62%</td><td>3</td><td>1</td><td>0 of 1</td><td>0 of 6</td></tr><tr><td>2026-10-04 19:29 UTC</td><td>0</td><td>60%</td><td>62%</td><td>2</td><td>0</td><td>1 of 2</td><td>2 of 6</td></tr></tbody></table></div>
+
+  <footer>
+    Sources: Microsoft Graph API, Okta API, input/hr_roster.csv (simulated HR data for a lab).
+    Thresholds: dormant after 14 days, provisioning within 48 hours,
+    deprovisioning within 24 hours, MFA target 95%.
+    Raw data and findings for this run are saved in the output and evidence folders.
+  </footer>
+</main>
+</body>
+</html>

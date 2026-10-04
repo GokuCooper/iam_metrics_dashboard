@@ -1,0 +1,13 @@
+run_time_utc,kpi,platform,login,name,detail
+2026-10-04T19:29:25+00:00,MFA adoption rate,Entra ID,ldossantos@dknorringtonzohomail.onmicrosoft.com,Lúcio Correia dos Santos,No MFA method registered
+2026-10-04T19:29:25+00:00,MFA adoption rate,Entra ID,loxton@dknorringtonzohomail.onmicrosoft.com,Lena Oxton,No MFA method registered
+2026-10-04T19:29:25+00:00,MFA adoption rate,Okta,sales.tester@example.com,Jack Dempsey,No MFA method registered
+2026-10-04T19:29:25+00:00,MFA adoption rate,Okta,hr.tester@example.com,Marvin Haggler,No MFA method registered
+2026-10-04T19:29:25+00:00,Provisioning SLA,Entra ID,ldossantos@dknorringtonzohomail.onmicrosoft.com,Lúcio Correia dos Santos,Account created 49 hours after hire date 2026-09-24
+2026-10-04T19:29:25+00:00,Provisioning SLA,Entra ID,mmalosi@dknorringtonzohomail.onmicrosoft.com,Maugaloa Malosi,Account created 73 hours after hire date 2026-09-23
+2026-10-04T19:29:25+00:00,Provisioning SLA,Okta,engineering.tester@example.com,Thomas Herns,Account created 54 hours after hire date 2026-09-14
+2026-10-04T19:29:25+00:00,Provisioning SLA,Okta,sales.tester@example.com,Jack Dempsey,Created but never activated by the user
+2026-10-04T19:29:25+00:00,Provisioning SLA,Okta,hr.tester@example.com,Marvin Haggler,Created but never activated by the user
+2026-10-04T19:29:25+00:00,Dormant accounts,Okta,sales.tester@example.com,Jack Dempsey,"Never signed in, account is 18 days old"
+2026-10-04T19:29:25+00:00,Dormant accounts,Okta,hr.tester@example.com,Marvin Haggler,"Never signed in, account is 18 days old"
+2026-10-04T19:29:25+00:00,Deprovisioning SLA,Entra ID,vsinghania@dknorringtonzohomail.onmicrosoft.com,Vaira Singhania,"Left on 2026-09-30, disabled 4.8 days later, outside the 24 hour target"

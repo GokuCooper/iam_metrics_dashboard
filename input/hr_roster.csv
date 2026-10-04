@@ -1,0 +1,9 @@
+﻿employee_id,full_name,department,job_status,hire_date,termination_date,manager_employee_id,entra_login,okta_login
+E1001,Lúcio Correia dos Santos,Marketing,active,2026-09-24,,,ldossantos@dknorringtonzohomail.onmicrosoft.com,
+E1002,Jamison Fawkes,Security,active,2026-09-25,,E1001,jfawkes@dknorringtonzohomail.onmicrosoft.com,
+E1003,Lena Oxton,Sales,active,2026-09-25,,E1001,loxton@dknorringtonzohomail.onmicrosoft.com,
+E1004,Maugaloa Malosi,IT,active,2026-09-23,,E1001,mmalosi@dknorringtonzohomail.onmicrosoft.com,
+E1005,Vaira Singhania,Finance,terminated,2026-09-25,2026-09-30,E1001,vsinghania@dknorringtonzohomail.onmicrosoft.com,
+E1006,Thomas Herns,Sales,terminated,2026-09-14,2026-10-04,,,engineering.tester@example.com
+E1007,Jack Dempsey,Sales,active,2026-09-15,,,,sales.tester@example.com
+E1008,Marvin Haggler,Human Resources,active,2026-09-16,,,,hr.tester@example.com

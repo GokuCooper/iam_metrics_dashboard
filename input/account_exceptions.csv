@@ -1,0 +1,5 @@
+﻿platform,login,account_type,owner,reason
+entra,breakglass01@dknorringtonzohomail.onmicrosoft.com,emergency_access,DeJurnett Norrington,Break glass account. Not tied to a person by design so it survives an outage.
+entra,labadmin@dknorringtonzohomail.onmicrosoft.com,admin,DeJurnett Norrington,"Dedicated tenant admin account, kept separate from any daily use identity."
+entra,dknorrington_zohomail.com#EXT#@dknorringtonzohomail.onmicrosoft.com,admin,DeJurnett Norrington,Tenant creator account. Personal Microsoft account shown as external.
+okta,dknorrington@zohomail.com,admin,DeJurnett Norrington,Okta org owner and super admin.
